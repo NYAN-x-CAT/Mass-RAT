@@ -19,7 +19,7 @@ namespace Client.Networking
         /// <summary>
         /// The socket used for communication.
         /// </summary>
-        private static Socket Socket;
+        public static Socket Socket { get; private set; }
 
         /// <summary>
         /// send a ping to check if other socket is alive or not every x second
@@ -29,7 +29,7 @@ namespace Client.Networking
         /// <summary>
         /// determinate the socket status
         /// </summary>
-        public static bool IsConnected { get; set; }
+        public static bool IsConnected { get; private set; }
 
         /// <summary>
         /// sync send

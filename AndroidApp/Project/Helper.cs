@@ -14,6 +14,11 @@ namespace AndroidApp.Project
 {
    public static class Helper
     {
+        /// <summary>
+        /// Fast way to detect the OS version with names instead of just int
+        /// To make my life easier.
+        /// </summary>
+        /// <returns></returns>
         public static string GetAndroidVersion()
         {
             switch (Xamarin.Essentials.DeviceInfo.Version.Major)

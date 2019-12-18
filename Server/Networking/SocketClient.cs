@@ -46,7 +46,7 @@ namespace Server.Networking
         /// <summary>
         /// The socket used for the client communication
         /// </summary>
-        public Socket Socket { get; set; }
+        public Socket Socket { get; private set; }
 
         /// <summary>
         /// to control the client listview
@@ -56,7 +56,7 @@ namespace Server.Networking
         /// <summary>
         /// send a ping to check if other socket is alive or not every x second
         /// </summary>
-        private readonly Timer KeepAlivePacket;
+        private Timer KeepAlivePacket;
 
         /// <summary>
         /// sync send

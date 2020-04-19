@@ -1,8 +1,8 @@
-﻿using Client.Networking;
+﻿using ClientWindows.Networking;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Interfaces;
 
-namespace Client.PacketHandler
+namespace ClientWindows.PacketHandler
 {
     public class ReadPacket
     {

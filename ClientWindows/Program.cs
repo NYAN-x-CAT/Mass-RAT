@@ -1,7 +1,7 @@
-﻿using Client.Networking;
+﻿using ClientWindows.Networking;
 using System.Threading;
 
-namespace Client
+namespace ClientWindows
 {
     /* 
            │ Author       : NYAN CAT

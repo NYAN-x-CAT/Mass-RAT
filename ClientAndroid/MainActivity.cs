@@ -2,13 +2,13 @@
 using Android.OS;
 using Android.Support.V7.App;
 using System.Threading;
-using AndroidApp.Project;
+using ClientAndroid.Project;
 using Android;
 using Android.Content;
 using System;
 using Android.Widget;
 
-namespace AndroidApp
+namespace ClientAndroid
 {
     [Activity(Label = "NYANxCAT", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
@@ -34,7 +34,6 @@ namespace AndroidApp
 
     [BroadcastReceiver(Enabled = true, Exported = true, DirectBootAware = true)]
     [IntentFilter(new string[] { Intent.ActionBootCompleted, Intent.ActionLockedBootCompleted, "android.intent.action.QUICKBOOT_POWERON", "com.htc.intent.action.QUICKBOOT_POWERON" })]
-
     public class BootReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
@@ -44,7 +43,6 @@ namespace AndroidApp
                 var serviceIntent = new Intent(context, typeof(MainActivity));
                 serviceIntent.AddFlags(ActivityFlags.NewTask);
                 context.StartActivity(serviceIntent);
-
             }
         }
     }

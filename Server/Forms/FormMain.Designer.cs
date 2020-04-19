@@ -90,7 +90,7 @@
             // 
             // osHeader
             // 
-            this.osHeader.Text = "Opertarin System";
+            this.osHeader.Text = "Operating system";
             this.osHeader.Width = 299;
             // 
             // FormMain

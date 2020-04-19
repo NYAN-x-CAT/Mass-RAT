@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{92BA2A7E-C198-4D43-929E-1CFE54B64D95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{6C43A753-9565-48B2-A372-4210BB1E0D75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientWindows", "ClientWindows\ClientWindows.csproj", "{6C43A753-9565-48B2-A372-4210BB1E0D75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibraries", "SharedLibraries\SharedLibraries.csproj", "{4CB9BBEE-FB92-44FA-A427-B7245BEFC2F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidApp", "AndroidApp\AndroidApp.csproj", "{B27784AA-F33E-4F25-975D-0D6A4A4DFD37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAndroid", "ClientAndroid\ClientAndroid.csproj", "{B27784AA-F33E-4F25-975D-0D6A4A4DFD37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

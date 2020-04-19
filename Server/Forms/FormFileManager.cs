@@ -161,7 +161,7 @@ namespace Server.Forms
             {
                 ListViewItem item = new ListViewItem
                 {
-                    Text = packet.FullPath,
+                    Text = Path.GetFileName(packet.FullPath),
                     Tag = socket, // needed for timer
                     ToolTipText = packet.FileId,
                 };
@@ -188,6 +188,7 @@ namespace Server.Forms
                         }
                     }
                 });
+                socket.Disconnected();
             }
         }
         #endregion
@@ -213,6 +214,21 @@ namespace Server.Forms
         private void IconArrowForward_Click(object sender, EventArgs e)
         {
             GoForward();
+        }
+
+        private void BetterListView2_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (betterListView2.SelectedItems[0].SubItems[2].Text == "Finished" && File.Exists(betterListView2.SelectedItems[0].Text))
+                {
+                    Process.Start(betterListView2.SelectedItems[0].Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, Settings.SafeThreading.UIThread.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -348,7 +364,7 @@ namespace Server.Forms
                         {
                             PacketFileManager_DownloadFile packet = new PacketFileManager_DownloadFile
                             {
-                                FullPath = betterListView1.SelectedItems[0].ToolTipText,
+                                FullPath = file.ToolTipText,
                             };
 
                             ThreadPool.QueueUserWorkItem((o) =>
@@ -363,12 +379,5 @@ namespace Server.Forms
         }
         #endregion
 
-        private void BetterListView2_DoubleClick(object sender, EventArgs e)
-        {
-            if (betterListView2.SelectedItems[0].SubItems[2].Text == "Finished" && File.Exists(betterListView2.SelectedItems[0].Text))
-            {
-                Process.Start(Application.StartupPath);
-            }
-        }
     }
 }

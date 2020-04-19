@@ -223,7 +223,7 @@ namespace Server.Networking
                         {
                             int read = 0;
                             memoryStream.Position = 0;
-                            byte[] chunk = new byte[5000];
+                            byte[] chunk = new byte[50 * 1000];
                             while ((read = memoryStream.Read(chunk, 0, chunk.Length)) > 0)
                             {
                                 Socket.Poll(-1, SelectMode.SelectWrite);
@@ -269,11 +269,10 @@ namespace Server.Networking
                     });
                 }
 
-                CurrentForms.Cleanup();
+                CurrentForms?.Cleanup();
                 CurrentForms = null;
 
                 Socket?.Dispose();
-                Socket = null;
 
                 KeepAlivePacket?.Dispose();
                 Buffer = null;

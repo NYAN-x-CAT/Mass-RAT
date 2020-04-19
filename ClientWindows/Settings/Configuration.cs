@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client.Settings
+namespace ClientWindows.Settings
 {
    public static class Configuration
     {

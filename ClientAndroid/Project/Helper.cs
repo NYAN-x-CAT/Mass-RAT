@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace AndroidApp.Project
+namespace ClientAndroid.Project
 {
    public static class Helper
     {

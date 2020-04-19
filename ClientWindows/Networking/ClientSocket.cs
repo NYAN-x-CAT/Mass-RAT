@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
-using Client.PacketHandler;
-using Client.Settings;
+using ClientWindows.PacketHandler;
+using ClientWindows.Settings;
 using Microsoft.VisualBasic.Devices;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Enums;
@@ -12,7 +12,7 @@ using SharedLibraries.Packet.Interfaces;
 using SharedLibraries.Packet.Serialization;
 
 
-namespace Client.Networking
+namespace ClientWindows.Networking
 {
     public static class ClientSocket
     {
@@ -100,8 +100,8 @@ namespace Client.Networking
 
                         Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                         {
-                            ReceiveBufferSize = 50000,
-                            SendBufferSize = 50000,
+                            ReceiveBufferSize = 50 * 1000,
+                            SendBufferSize = 50 * 1000,
                         };
                         Socket.Connect(Configuration.Host, Configuration.Port);
                         IsConnected = true;

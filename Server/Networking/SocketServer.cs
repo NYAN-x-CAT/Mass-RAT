@@ -19,8 +19,8 @@ namespace Server.Networking
             {
                 Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
-                    ReceiveBufferSize = 50000,
-                    SendBufferSize = 50000,
+                    ReceiveBufferSize = 50 * 1000,
+                    SendBufferSize = 50 * 1000,
                 };
                 server.Bind(new IPEndPoint(IPAddress.Any, port));
                 server.Listen(200);

@@ -3,13 +3,13 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using Android.OS;
-using AndroidApp.Project.PacketHandler;
+using ClientAndroid.Project.PacketHandler;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Enums;
 using SharedLibraries.Packet.Interfaces;
 using SharedLibraries.Packet.Serialization;
 
-namespace AndroidApp.Project
+namespace ClientAndroid.Project
 {
     public static class SocketClient
     {
@@ -102,8 +102,8 @@ namespace AndroidApp.Project
 
                         Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                         {
-                            ReceiveBufferSize = 50000,
-                            SendBufferSize = 50000,
+                            ReceiveBufferSize = 50 * 1000,
+                            SendBufferSize = 50 * 1000,
                         };
                         Socket.Connect(Configuration.Host, Configuration.Port);
                         IsConnected = true;
@@ -192,7 +192,7 @@ namespace AndroidApp.Project
                         {
                             int read = 0;
                             memoryStream.Position = 0;
-                            byte[] chunk = new byte[5000];
+                            byte[] chunk = new byte[50 * 1000];
                             while ((read = memoryStream.Read(chunk, 0, chunk.Length)) > 0)
                             {
                                 Socket.Poll(-1, SelectMode.SelectWrite);

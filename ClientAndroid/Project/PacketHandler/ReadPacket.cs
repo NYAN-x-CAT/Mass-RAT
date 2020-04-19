@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -12,7 +11,7 @@ using Android.Widget;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Interfaces;
 
-namespace AndroidApp.Project.PacketHandler
+namespace ClientAndroid.Project.PacketHandler
 {
     public class ReadPacket
     {

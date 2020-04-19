@@ -97,6 +97,7 @@ namespace ClientAndroid.Project
                 {
                     try
                     {
+                        Thread.Sleep(2000);
                         Socket?.Dispose();
                         KeepAlivePacket?.Dispose();
 
@@ -114,12 +115,10 @@ namespace ClientAndroid.Project
                     catch (SocketException se)
                     {
                         Console.WriteLine(se.SocketErrorCode);
-                        Thread.Sleep(new Random().Next(2000, 5000));
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        Thread.Sleep(new Random().Next(2000, 5000));
                     }
                 }
 

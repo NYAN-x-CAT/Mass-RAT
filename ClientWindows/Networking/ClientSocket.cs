@@ -95,6 +95,8 @@ namespace ClientWindows.Networking
                 {
                     try
                     {
+                        Thread.Sleep(2000);
+
                         Socket?.Dispose();
                         KeepAlivePacket?.Dispose();
 
@@ -118,12 +120,10 @@ namespace ClientWindows.Networking
                     catch (SocketException se)
                     {
                         Debug.WriteLine(se.SocketErrorCode);
-                        Thread.Sleep(new Random().Next(2000, 5000));
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        Thread.Sleep(new Random().Next(2000, 5000));
                     }
                 }
 

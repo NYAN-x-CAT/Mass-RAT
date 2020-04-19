@@ -16,34 +16,25 @@ namespace ClientAndroid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
-            RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReceiveBootCompleted }, 00);
-            SocketClient.GetMainActivity = this;
+
+            RequestPermissions(new string[] { 
+                Manifest.Permission.ReadExternalStorage, 
+                Manifest.Permission.WriteExternalStorage, 
+                Manifest.Permission.ReceiveBootCompleted }, 00);
+           
+            // Socket thread
             new Thread(new ThreadStart(delegate
             {
-                if (SocketClient.IsConnected) return;
+                if (SocketClient.GetMainActivity != null) return;
+                SocketClient.GetMainActivity = this;
                 SocketClient.ReceiveHeader();
             }))
             { IsBackground = false }.Start();
+
             this.FinishAffinity();
-        }
-    }
-
-
-    [BroadcastReceiver(Enabled = true, Exported = true, DirectBootAware = true)]
-    [IntentFilter(new string[] { Intent.ActionBootCompleted, Intent.ActionLockedBootCompleted, "android.intent.action.QUICKBOOT_POWERON", "com.htc.intent.action.QUICKBOOT_POWERON" })]
-    public class BootReceiver : BroadcastReceiver
-    {
-        public override void OnReceive(Context context, Intent intent)
-        {
-            if (intent.Action.Equals(Intent.ActionBootCompleted))
-            {
-                var serviceIntent = new Intent(context, typeof(MainActivity));
-                serviceIntent.AddFlags(ActivityFlags.NewTask);
-                context.StartActivity(serviceIntent);
-            }
         }
     }
 }

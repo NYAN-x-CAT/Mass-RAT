@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using Android.Graphics;
-using Android.Util;
 using SharedLibraries.Helper;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Interfaces;
@@ -90,25 +87,25 @@ namespace ClientAndroid.Project.PacketHandler
             if (fileInfo.Exists)
             {
                 Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socket.Connect(Configuration.Host, Configuration.Port);
-                    if (socket.Connected)
+                socket.Connect(Configuration.Host, Configuration.Port);
+                if (socket.Connected)
+                {
+                    string fileId = Guid.NewGuid().ToString();
+                    SendSocket(new PacketFileManager_DownloadFile
                     {
-                        string fileId = Guid.NewGuid().ToString();
-                        SendSocket(new PacketFileManager_DownloadFile
-                        {
-                            FullPath = packet.FullPath,
-                            SocketId = Configuration.Id,
-                            Size = fileInfo.Length,
-                            FileId = fileId,
-                        }, socket);
+                        FullPath = packet.FullPath,
+                        SocketId = Configuration.Id,
+                        Size = fileInfo.Length,
+                        FileId = fileId,
+                    }, socket);
 
-                        SendSocket(new PacketFileManager_DownloadFile
-                        {
-                            ByteArray = File.ReadAllBytes(packet.FullPath),
-                            FullPath = packet.FullPath,
-                            SocketId = Configuration.Id,
-                            FileId = fileId,
-                        }, socket);
+                    SendSocket(new PacketFileManager_DownloadFile
+                    {
+                        ByteArray = File.ReadAllBytes(packet.FullPath),
+                        FullPath = packet.FullPath,
+                        SocketId = Configuration.Id,
+                        FileId = fileId,
+                    }, socket);
                 }
             }
         }

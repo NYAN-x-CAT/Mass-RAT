@@ -2,7 +2,11 @@
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
+
+using Android.App;
+using Android.Content;
 using Android.OS;
+
 using ClientAndroid.Project.PacketHandler;
 using SharedLibraries.Packet.Commands;
 using SharedLibraries.Packet.Enums;
@@ -11,13 +15,10 @@ using SharedLibraries.Packet.Serialization;
 
 namespace ClientAndroid.Project
 {
-    public static class SocketClient
+    [Service]
+    public class SocketClient : Service
     {
-        /// <summary>
-        /// UI thread
-        /// </summary>
-        public static MainActivity GetMainActivity { get; set; }
-
+        private static bool IsRunning { get; set; }
         /// <summary>
         /// The socket used for communication.
         /// </summary>
@@ -37,6 +38,35 @@ namespace ClientAndroid.Project
         /// sync send
         /// </summary>
         private static readonly object LockSend = new object();
+
+
+        /// <summary>
+        /// initialize your activity
+        /// </summary>
+        public override void OnCreate()
+        {
+            base.OnCreate();
+        }
+
+        /// <summary>
+        /// Called by the system every time a client explicitly starts the service
+        /// </summary>
+        /// <param name="intent">The Intent supplied to StartService(Intent), as given.</param>
+        /// <param name="flags">Additional data about this start request</param>
+        /// <param name="startId">A unique integer representing this specific request to start</param>
+        /// <returns></returns>
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            if (!IsRunning)
+            {
+                IsRunning = true;
+                new Thread(() =>
+                {
+                    ReceiveHeader();
+                }).Start();
+            }
+            return StartCommandResult.NotSticky;
+        }
 
         /// <summary>
         /// Read incoming headers
@@ -230,6 +260,12 @@ namespace ClientAndroid.Project
                 OperatingSystem = Helper.GetAndroidVersion(),
                 ID = Configuration.Id,
             };
+        }
+
+        public override IBinder OnBind(Intent intent)
+        {
+            // This is a started service, not a bound service, so we just return null.
+            return null;
         }
     }
 

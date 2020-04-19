@@ -34,7 +34,7 @@ namespace ClientAndroid
             }))
             { IsBackground = false }.Start();
 
-            this.FinishAffinity();
+            base.OnBackPressed();
         }
     }
 }
